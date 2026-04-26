@@ -16,8 +16,8 @@ import { mockNotifications } from "@/data/mockData";
 import { formatDistanceToNow } from "date-fns";
 
 const navigation = [
-  { name: "Home", href: "/home", icon: Home },
-  { name: "Dashboard", href: "/", icon: LayoutDashboard },
+  { name: "Home", href: "/", icon: Home },
+  { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
   { name: "Users", href: "/users", icon: Users },
   { name: "Analytics", href: "/analytics", icon: BarChart3 },
   { name: "Reports", href: "/reports", icon: FileText },
@@ -47,8 +47,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
         mobileOpen ? "translate-x-0" : "-translate-x-full"
       )}>
         <div className="h-14 flex items-center px-4 gap-2 border-b border-border/60 shrink-0">
-          <div className="w-7 h-7 rounded bg-primary/20 flex items-center justify-center text-primary">
-            <Sparkles className="w-4 h-4" />
+          <div className="w-7 h-7 rounded overflow-hidden flex items-center justify-center">
+            <img src="/logo.png" alt="Nexus Logo" className="w-full h-full object-contain" />
           </div>
           <span className="font-bold text-base tracking-tight">Nexus</span>
         </div>
@@ -83,14 +83,14 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <div className="h-14 flex items-center border-b border-border/60 shrink-0 overflow-hidden">
           {collapsed ? (
             <div className="w-full flex justify-center">
-              <div className="w-7 h-7 rounded bg-primary/20 flex items-center justify-center text-primary">
-                <Sparkles className="w-4 h-4" />
+              <div className="w-7 h-7 rounded overflow-hidden flex items-center justify-center">
+                <img src="/logo.png" alt="Nexus Logo" className="w-full h-full object-contain" />
               </div>
             </div>
           ) : (
             <div className="flex items-center gap-2 px-4">
-              <div className="w-7 h-7 rounded bg-primary/20 flex items-center justify-center text-primary shrink-0">
-                <Sparkles className="w-4 h-4" />
+              <div className="w-7 h-7 rounded overflow-hidden flex items-center justify-center shrink-0">
+                <img src="/logo.png" alt="Nexus Logo" className="w-full h-full object-contain" />
               </div>
               <span className="font-bold text-base tracking-tight whitespace-nowrap">Nexus</span>
             </div>
@@ -202,6 +202,9 @@ function Header({ setMobileOpen, profile, initials }: {
         <button className="md:hidden" onClick={() => setMobileOpen(true)}>
           <Menu className="w-5 h-5" />
         </button>
+        <div className="md:hidden w-7 h-7 rounded overflow-hidden flex items-center justify-center">
+          <img src="/logo.png" alt="Nexus Logo" className="w-full h-full object-contain" />
+        </div>
         <div className="relative hidden sm:flex items-center">
           <Search className="absolute left-2.5 w-3.5 h-3.5 text-muted-foreground" />
           <Input

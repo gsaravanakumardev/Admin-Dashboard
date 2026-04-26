@@ -20,7 +20,7 @@ const fontClasses: Record<FontId, string> = {
 };
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setThemeState] = useState<ThemeId>("dark");
+  const [theme, setThemeState] = useState<ThemeId>("light");
   const [font, setFontState] = useState<FontId>("inter");
 
   useEffect(() => {
