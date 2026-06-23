@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   LayoutDashboard, Users, BarChart3, FileText, Sparkles, Settings as SettingsIcon,
-  Menu, Bell, Search, ChevronLeft, ChevronRight, Settings2, Check, Home,
+  Menu, Bell, Search, ChevronLeft, ChevronRight, Settings2, Check,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
@@ -14,9 +14,9 @@ import { useTheme, themes, fonts, type ThemeId, type FontId } from "@/context/Th
 import { useProfile } from "@/context/ProfileContext";
 import { mockNotifications } from "@/data/mockData";
 import { formatDistanceToNow } from "date-fns";
+import { useThemeDiscoveryToast } from "@/hooks/use-theme-discovery-toast";
 
 const navigation = [
-  { name: "Home", href: "/", icon: Home },
   { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
   { name: "Users", href: "/users", icon: Users },
   { name: "Analytics", href: "/analytics", icon: BarChart3 },
@@ -30,6 +30,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
   const location = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
   const { profile } = useProfile();
+
+  useThemeDiscoveryToast();
 
   const initials = profile.name.split(" ").map(n => n[0]).join("").slice(0, 2).toUpperCase();
 
@@ -47,10 +49,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
         mobileOpen ? "translate-x-0" : "-translate-x-full"
       )}>
         <div className="h-14 flex items-center px-4 gap-2 border-b border-border/60 shrink-0">
-          <div className="w-7 h-7 rounded overflow-hidden flex items-center justify-center">
-            <img src="/logo.png" alt="Nexus Logo" className="w-full h-full object-contain" />
-          </div>
-          <span className="font-bold text-base tracking-tight">Nexus</span>
+          <span className="font-bold text-xl tracking-tight" style={{ fontFamily: "'Poppins', 'Segoe UI', sans-serif" }}>
+            Nexus
+          </span>
         </div>
         <div className="flex-1 overflow-auto py-3 px-2">
           <div className="flex flex-col gap-1">
@@ -83,16 +84,21 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <div className="h-14 flex items-center border-b border-border/60 shrink-0 overflow-hidden">
           {collapsed ? (
             <div className="w-full flex justify-center">
-              <div className="w-7 h-7 rounded overflow-hidden flex items-center justify-center">
-                <img src="/logo.png" alt="Nexus Logo" className="w-full h-full object-contain" />
-              </div>
+              <span
+                className="font-bold text-lg tracking-tight"
+                style={{ fontFamily: "'Poppins', 'Segoe UI', sans-serif" }}
+              >
+                N
+              </span>
             </div>
           ) : (
-            <div className="flex items-center gap-2 px-4">
-              <div className="w-7 h-7 rounded overflow-hidden flex items-center justify-center shrink-0">
-                <img src="/logo.png" alt="Nexus Logo" className="w-full h-full object-contain" />
-              </div>
-              <span className="font-bold text-base tracking-tight whitespace-nowrap">Nexus</span>
+            <div className="flex items-center px-4">
+              <span
+                className="font-bold text-xl tracking-tight whitespace-nowrap"
+                style={{ fontFamily: "'Poppins', 'Segoe UI', sans-serif" }}
+              >
+                Nexus
+              </span>
             </div>
           )}
         </div>
@@ -160,13 +166,24 @@ export function Layout({ children }: { children: React.ReactNode }) {
       </div>
 
       {/* Main Content Area */}
-      <div className="flex-1 flex flex-col min-w-0 h-full overflow-hidden">
+      <div className="flex-1 flex flex-col min-w-0 h-full overflow-hidden relative">
         <Header setMobileOpen={setMobileOpen} profile={profile} initials={initials} />
         <main className="flex-1 overflow-auto bg-background">
           <div className="px-4 py-4">
             {children}
           </div>
         </main>
+
+        {/* AI Floating Assistant */}
+        <Link href="/ai" className="fixed bottom-6 right-6 z-50">
+          <div className="w-14 h-14 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-lg hover:scale-105 transition-transform glow-primary border border-primary/50 relative">
+            <Sparkles className="w-6 h-6 animate-pulse" />
+            <span className="absolute -top-1 -right-1 flex h-3 w-3">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary-foreground opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-3 w-3 bg-primary-foreground"></span>
+            </span>
+          </div>
+        </Link>
       </div>
     </div>
   );
@@ -202,9 +219,12 @@ function Header({ setMobileOpen, profile, initials }: {
         <button className="md:hidden" onClick={() => setMobileOpen(true)}>
           <Menu className="w-5 h-5" />
         </button>
-        <div className="md:hidden w-7 h-7 rounded overflow-hidden flex items-center justify-center">
-          <img src="/logo.png" alt="Nexus Logo" className="w-full h-full object-contain" />
-        </div>
+        <span
+          className="md:hidden font-bold text-lg tracking-tight"
+          style={{ fontFamily: "'Poppins', 'Segoe UI', sans-serif" }}
+        >
+          Nexus
+        </span>
         <div className="relative hidden sm:flex items-center">
           <Search className="absolute left-2.5 w-3.5 h-3.5 text-muted-foreground" />
           <Input

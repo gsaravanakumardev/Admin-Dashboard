@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { Layout, Breadcrumbs } from "@/components/layout/Layout";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Check, Camera } from "lucide-react";
@@ -10,6 +11,8 @@ import { useProfile } from "@/context/ProfileContext";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export default function Settings() {
+  const searchParams = useSearchParams();
+  const defaultTab = searchParams.get("tab") || "profile";
   const { theme, font, setTheme, setFont } = useTheme();
   const { profile, updateProfile } = useProfile();
 
@@ -40,9 +43,9 @@ export default function Settings() {
 
   return (
     <Layout>
-      <Breadcrumbs items={[{ label: "Home", href: "/home" }, { label: "Dashboard", href: "/" }, { label: "Settings" }]} />
+      <Breadcrumbs items={[{ label: "Dashboard", href: "/" }, { label: "Settings" }]} />
 
-      <Tabs defaultValue="profile">
+      <Tabs defaultValue={defaultTab}>
         <TabsList className="rounded h-8 mb-6">
           <TabsTrigger value="profile" className="text-xs rounded">Profile</TabsTrigger>
           <TabsTrigger value="appearance" className="text-xs rounded">Appearance</TabsTrigger>

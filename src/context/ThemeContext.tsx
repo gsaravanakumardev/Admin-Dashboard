@@ -20,8 +20,8 @@ const fontClasses: Record<FontId, string> = {
 };
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setThemeState] = useState<ThemeId>("light");
-  const [font, setFontState] = useState<FontId>("inter");
+  const [theme, setThemeState] = useState<ThemeId>("orange");
+  const [font, setFontState] = useState<FontId>("poppins");
 
   useEffect(() => {
     const savedTheme = localStorage.getItem("nexus-theme") as ThemeId;

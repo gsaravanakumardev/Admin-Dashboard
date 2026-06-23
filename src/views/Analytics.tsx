@@ -16,7 +16,7 @@ function KpiCard({ icon: Icon, label, value, sub, color }: {
   icon: React.ComponentType<{ className?: string; style?: React.CSSProperties }>; label: string; value: string; sub: string; color: string;
 }) {
   return (
-    <div className="rounded border border-border/60 bg-card px-4 py-4">
+    <div className="rounded border border-border/60 bg-card/80 backdrop-blur-md px-4 py-4 hover:glow-border transition-all">
       <div className="flex items-center gap-2 mb-3">
         <div className="w-7 h-7 rounded flex items-center justify-center" style={{ background: `${color}18` }}>
           <Icon className="w-4 h-4" style={{ color }} />
@@ -29,7 +29,7 @@ function KpiCard({ icon: Icon, label, value, sub, color }: {
   );
 }
 
-const RCOLORS = ["hsl(243 75% 59%)", "hsl(280 65% 60%)", "hsl(199 89% 48%)", "hsl(160 84% 39%)", "hsl(38 92% 50%)"];
+const RCOLORS = ["hsl(var(--chart-1))", "hsl(var(--chart-2))", "hsl(var(--chart-3))", "hsl(var(--chart-4))", "hsl(var(--chart-5))"];
 
 export default function Analytics() {
   const [dateRange, setDateRange] = useState("30d");
@@ -44,13 +44,13 @@ export default function Analytics() {
 
   return (
     <Layout>
-      <Breadcrumbs items={[{ label: "Home", href: "/home" }, { label: "Dashboard", href: "/" }, { label: "Analytics" }]} />
+      <Breadcrumbs items={[{ label: "Dashboard", href: "/" }, { label: "Analytics" }]} />
 
       {/* Top KPIs */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
-        <KpiCard icon={TrendingUp} label="Total Sessions" value={totalSessions.toLocaleString()} sub="Last 30 days" color="hsl(243 75% 59%)" />
-        <KpiCard icon={Users} label="Avg. Retention" value={`${avgRetention}%`} sub="Week 2–8 average" color="hsl(160 84% 39%)" />
-        <KpiCard icon={Monitor} label="Top Device" value={topDevice.device} sub={`${topDevice.percentage}% of sessions`} color="hsl(38 92% 50%)" />
+        <KpiCard icon={TrendingUp} label="Total Sessions" value={totalSessions.toLocaleString()} sub="Last 30 days" color="hsl(var(--primary))" />
+        <KpiCard icon={Users} label="Avg. Retention" value={`${avgRetention}%`} sub="Week 2–8 average" color="hsl(var(--chart-2))" />
+        <KpiCard icon={Monitor} label="Top Device" value={topDevice.device} sub={`${topDevice.percentage}% of sessions`} color="hsl(var(--chart-3))" />
       </div>
 
       {/* Date filter */}
@@ -75,7 +75,7 @@ export default function Analytics() {
         {/* Traffic Tab */}
         <TabsContent value="traffic">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            <div className="rounded border border-border/60 bg-card px-4 py-4">
+            <div className="rounded border border-border/60 bg-card/80 backdrop-blur-md px-4 py-4 hover:glow-border transition-all">
               <h2 className="text-sm font-semibold mb-4">Traffic Breakdown</h2>
               <ResponsiveContainer width="100%" height={280}>
                 <PieChart>
@@ -86,7 +86,7 @@ export default function Analytics() {
                 </PieChart>
               </ResponsiveContainer>
             </div>
-            <div className="rounded border border-border/60 bg-card px-4 py-4">
+            <div className="rounded border border-border/60 bg-card/80 backdrop-blur-md px-4 py-4 hover:glow-border transition-all">
               <h2 className="text-sm font-semibold mb-4">Source Breakdown</h2>
               <div className="space-y-3">
                 {mockTrafficSources.map((s, i) => (
@@ -108,7 +108,7 @@ export default function Analytics() {
         {/* Retention Tab */}
         <TabsContent value="retention">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-            <div className="lg:col-span-2 rounded border border-border/60 bg-card px-4 py-4">
+            <div className="lg:col-span-2 rounded border border-border/60 bg-card/80 backdrop-blur-md px-4 py-4 hover:glow-border transition-all">
               <h2 className="text-sm font-semibold mb-4">Weekly Retention Curve</h2>
               <ResponsiveContainer width="100%" height={280}>
                 <LineChart data={retentionLines}>
@@ -117,12 +117,12 @@ export default function Analytics() {
                   <YAxis tick={{ fontSize: 10, fill: "hsl(var(--muted-foreground))" }} axisLine={false} tickLine={false} domain={[0, 100]} tickFormatter={v => `${v}%`} />
                   <RechartsTooltip contentStyle={{ background: "hsl(var(--popover))", border: "1px solid hsl(var(--border))", borderRadius: "0.5rem", fontSize: 12 }} formatter={(v: number) => [`${v}%`]} />
                   <Legend wrapperStyle={{ fontSize: 12 }} />
-                  <Line type="monotone" dataKey="current" name="Current Period" stroke="hsl(243 75% 59%)" strokeWidth={2} dot={{ r: 3 }} />
-                  <Line type="monotone" dataKey="previous" name="Previous Period" stroke="hsl(199 89% 48%)" strokeWidth={2} dot={{ r: 3 }} strokeDasharray="4 4" />
+                  <Line type="monotone" dataKey="current" name="Current Period" stroke="hsl(var(--primary))" strokeWidth={2} dot={{ r: 3 }} />
+                  <Line type="monotone" dataKey="previous" name="Previous Period" stroke="hsl(var(--chart-2))" strokeWidth={2} dot={{ r: 3 }} strokeDasharray="4 4" />
                 </LineChart>
               </ResponsiveContainer>
             </div>
-            <div className="rounded border border-border/60 bg-card px-4 py-4">
+            <div className="rounded border border-border/60 bg-card/80 backdrop-blur-md px-4 py-4 hover:glow-border transition-all">
               <h2 className="text-sm font-semibold mb-4">Cohort Summary</h2>
               <div className="space-y-3">
                 {mockRetentionData.labels.map((week, i) => {
@@ -132,7 +132,7 @@ export default function Analytics() {
                       <span className="text-muted-foreground">{week}</span>
                       <div className="flex items-center gap-2">
                         <span className="font-medium">{mockRetentionData.current[i]}%</span>
-                        <span className={`text-xs ${diff >= 0 ? "text-green-500" : "text-red-500"}`}>
+                        <span className={`text-xs ${diff >= 0 ? "text-primary" : "text-red-500"}`}>
                           {diff >= 0 ? "+" : ""}{diff}%
                         </span>
                       </div>
@@ -147,7 +147,7 @@ export default function Analytics() {
         {/* Devices Tab */}
         <TabsContent value="devices">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            <div className="rounded border border-border/60 bg-card px-4 py-4">
+            <div className="rounded border border-border/60 bg-card/80 backdrop-blur-md px-4 py-4 hover:glow-border transition-all">
               <h2 className="text-sm font-semibold mb-4">Device Distribution</h2>
               <ResponsiveContainer width="100%" height={280}>
                 <BarChart data={mockDeviceUsage} layout="vertical">
@@ -155,11 +155,11 @@ export default function Analytics() {
                   <XAxis type="number" tick={{ fontSize: 10, fill: "hsl(var(--muted-foreground))" }} axisLine={false} tickLine={false} tickFormatter={v => `${v}`} />
                   <YAxis type="category" dataKey="device" tick={{ fontSize: 10, fill: "hsl(var(--muted-foreground))" }} axisLine={false} tickLine={false} width={60} />
                   <RechartsTooltip contentStyle={{ background: "hsl(var(--popover))", border: "1px solid hsl(var(--border))", borderRadius: "0.5rem", fontSize: 12 }} />
-                  <Bar dataKey="users" radius={4} fill="hsl(243 75% 59%)" />
+                  <Bar dataKey="users" radius={4} fill="hsl(var(--primary))" />
                 </BarChart>
               </ResponsiveContainer>
             </div>
-            <div className="rounded border border-border/60 bg-card px-4 py-4">
+            <div className="rounded border border-border/60 bg-card/80 backdrop-blur-md px-4 py-4 hover:glow-border transition-all">
               <h2 className="text-sm font-semibold mb-4">Device Stats</h2>
               <div className="space-y-4">
                 {mockDeviceUsage.map((d, i) => (

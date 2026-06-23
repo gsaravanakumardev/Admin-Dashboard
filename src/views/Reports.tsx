@@ -114,7 +114,7 @@ export default function Reports() {
   return (
     <Layout>
       {showModal && <GenerateModal onClose={() => setShowModal(false)} />}
-      <Breadcrumbs items={[{ label: "Home", href: "/home" }, { label: "Dashboard", href: "/" }, { label: "Reports" }]} />
+      <Breadcrumbs items={[{ label: "Dashboard", href: "/" }, { label: "Reports" }]} />
 
       <Tabs defaultValue="all">
         <div className="flex items-center justify-between mb-4 flex-wrap gap-3">

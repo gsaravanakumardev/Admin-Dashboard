@@ -183,7 +183,7 @@ export default function Users() {
   return (
     <Layout>
       {selected && <UserDetail user={selected} onClose={() => setSelected(null)} />}
-      <Breadcrumbs items={[{ label: "Home", href: "/home" }, { label: "Dashboard", href: "/" }, { label: "Users" }]} />
+      <Breadcrumbs items={[{ label: "Dashboard", href: "/" }, { label: "Users" }]} />
 
       <Tabs defaultValue="all">
         <div className="flex items-center justify-between mb-4 flex-wrap gap-3">

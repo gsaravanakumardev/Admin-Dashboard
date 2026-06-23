@@ -19,7 +19,7 @@ function InsightCard({ insight }: { insight: AiInsight }) {
   const cfg = SEVERITY_CONFIG[insight.severity];
   const Icon = cfg.icon;
   return (
-    <div className="rounded border border-border/60 bg-card px-4 py-4">
+    <div className="rounded border border-border/60 bg-card/80 backdrop-blur-md px-4 py-4 hover:glow-border transition-all">
       <div className="flex items-start gap-3">
         <div className={cn("w-8 h-8 rounded flex items-center justify-center shrink-0", cfg.bg)}>
           <Icon className={cn("w-4 h-4", cfg.color)} />
@@ -100,7 +100,7 @@ export default function AiInsights() {
 
   return (
     <Layout>
-      <Breadcrumbs items={[{ label: "Home", href: "/home" }, { label: "Dashboard", href: "/" }, { label: "AI Insights" }]} />
+      <Breadcrumbs items={[{ label: "Dashboard", href: "/" }, { label: "AI Insights" }]} />
 
       <Tabs defaultValue="insights">
         <TabsList className="rounded h-8 mb-4">
@@ -118,7 +118,7 @@ export default function AiInsights() {
 
         {/* Chat Tab */}
         <TabsContent value="chat">
-          <div className="rounded border border-border/60 bg-card overflow-hidden flex flex-col" style={{ height: "calc(100vh - 220px)", minHeight: 400 }}>
+          <div className="rounded border border-border/60 bg-card/80 backdrop-blur-md overflow-hidden flex flex-col glow-border relative" style={{ height: "calc(100vh - 220px)", minHeight: 400 }}>
             {/* Messages */}
             <div className="flex-1 overflow-auto px-4 py-4 space-y-4">
               {messages.map(msg => (
@@ -139,8 +139,9 @@ export default function AiInsights() {
               ))}
               {loading && (
                 <div className="flex items-center gap-2">
-                  <div className="w-7 h-7 rounded bg-primary/20 flex items-center justify-center text-primary shrink-0">
-                    <Sparkles className="w-3.5 h-3.5" />
+                  <div className="w-7 h-7 rounded bg-primary/20 flex items-center justify-center text-primary shrink-0 relative">
+                    <Sparkles className="w-3.5 h-3.5 animate-pulse" />
+                    <span className="absolute inset-0 rounded-full bg-primary/30 animate-ping"></span>
                   </div>
                   <div className="bg-muted rounded px-3 py-2.5 flex items-center gap-1.5">
                     <Loader2 className="w-3.5 h-3.5 animate-spin text-muted-foreground" />
@@ -187,7 +188,7 @@ export default function AiInsights() {
               { label: "Warnings", count: warnings.length, color: "text-yellow-500", bg: "bg-yellow-500/10" },
               { label: "Positive", count: positive.length, color: "text-green-500", bg: "bg-green-500/10" },
             ].map(s => (
-              <div key={s.label} className="rounded border border-border/60 bg-card px-4 py-4">
+              <div key={s.label} className="rounded border border-border/60 bg-card/80 backdrop-blur-md px-4 py-4 hover:glow-border transition-all">
                 <div className={cn("text-2xl font-bold", s.color)}>{s.count}</div>
                 <div className="text-sm text-muted-foreground mt-1">{s.label} Alerts</div>
               </div>

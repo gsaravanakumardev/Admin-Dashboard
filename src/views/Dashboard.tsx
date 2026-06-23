@@ -31,7 +31,7 @@ function KpiCard({ title, value, trend, icon: Icon, color, sparkData }: {
 }) {
   const positive = trend >= 0;
   return (
-    <div className="rounded border border-border/60 bg-card px-4 py-4">
+    <div className="rounded border border-border/60 bg-card/80 backdrop-blur-md px-4 py-4 hover:glow-border transition-all">
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 rounded flex items-center justify-center" style={{ background: `${color}15` }}>
@@ -39,7 +39,7 @@ function KpiCard({ title, value, trend, icon: Icon, color, sparkData }: {
           </div>
           <span className="text-sm text-muted-foreground font-medium">{title}</span>
         </div>
-        <span className={cn("flex items-center gap-0.5 text-xs font-medium", positive ? "text-green-500" : "text-red-500")}>
+        <span className={cn("flex items-center gap-0.5 text-xs font-medium", positive ? "text-primary" : "text-red-500")}>
           {positive ? <ArrowUpRight className="w-3 h-3" /> : <ArrowDownRight className="w-3 h-3" />}
           {Math.abs(trend)}%
         </span>
@@ -89,21 +89,21 @@ export default function Dashboard() {
 
   return (
     <Layout>
-      <Breadcrumbs items={[{ label: "Home", href: "/home" }, { label: "Dashboard" }]} />
+      <Breadcrumbs items={[{ label: "Dashboard" }]} />
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 mb-4">
         <KpiCard title="Total Users" value={m.totalUsers.toLocaleString()} trend={m.totalUsersTrend}
-          icon={Users} color="hsl(243 75% 59%)" sparkData={m.sparklines.users} />
+          icon={Users} color="hsl(var(--primary))" sparkData={m.sparklines.users} />
         <KpiCard title="Active Sessions" value={m.activeSessions.toLocaleString()} trend={m.activeSessionsTrend}
-          icon={Activity} color="hsl(199 89% 48%)" sparkData={m.sparklines.sessions} />
+          icon={Activity} color="hsl(var(--chart-2))" sparkData={m.sparklines.sessions} />
         <KpiCard title="Revenue" value={`$${(m.revenue / 1000).toFixed(0)}K`} trend={m.revenueTrend}
-          icon={DollarSign} color="hsl(160 84% 39%)" sparkData={m.sparklines.revenue} />
+          icon={DollarSign} color="hsl(var(--chart-3))" sparkData={m.sparklines.revenue} />
         <KpiCard title="Conversion" value={`${m.conversionRate}%`} trend={m.conversionRateTrend}
-          icon={TrendingUp} color="hsl(38 92% 50%)" sparkData={m.sparklines.conversion} />
+          icon={TrendingUp} color="hsl(var(--chart-4))" sparkData={m.sparklines.conversion} />
       </div>
 
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-4 mb-4">
         {/* Chart Tabs */}
-        <div className="xl:col-span-2 rounded border border-border/60 bg-card px-4 py-4">
+        <div className="xl:col-span-2 rounded border border-border/60 bg-card/80 backdrop-blur-md px-4 py-4 hover:glow-border transition-all">
           <div className="flex items-center justify-between mb-4">
             <h2 className="font-semibold text-sm">Performance</h2>
             <Select value={period} onValueChange={(v: "7d" | "30d" | "90d") => setPeriod(v)}>
@@ -127,34 +127,49 @@ export default function Dashboard() {
                 <AreaChart data={revenuePoints}>
                   <defs>
                     <linearGradient id="rev" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="hsl(160 84% 39%)" stopOpacity={0.25} />
-                      <stop offset="95%" stopColor="hsl(160 84% 39%)" stopOpacity={0} />
+                      <stop offset="5%" stopColor="hsl(var(--chart-3))" stopOpacity={0.4} />
+                      <stop offset="95%" stopColor="hsl(var(--chart-3))" stopOpacity={0} />
                     </linearGradient>
+                    <filter id="glowArea" x="-20%" y="-20%" width="140%" height="140%">
+                      <feGaussianBlur stdDeviation="4" result="blur" />
+                      <feMerge>
+                        <feMergeNode in="blur"/>
+                        <feMergeNode in="SourceGraphic"/>
+                      </feMerge>
+                    </filter>
                   </defs>
                   <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" strokeOpacity={0.5} />
                   <XAxis dataKey="label" tick={{ fontSize: 10, fill: "hsl(var(--muted-foreground))" }} axisLine={false} tickLine={false} interval={Math.floor(revenuePoints.length / 6)} />
                   <YAxis tick={{ fontSize: 10, fill: "hsl(var(--muted-foreground))" }} axisLine={false} tickLine={false} tickFormatter={v => `$${(v/1000).toFixed(0)}k`} />
-                  <RechartsTooltip contentStyle={{ background: "hsl(var(--popover))", border: "1px solid hsl(var(--border))", borderRadius: "0.5rem", fontSize: 12 }} formatter={(v: number) => [`$${v.toLocaleString()}`, "Revenue"]} />
-                  <Area type="monotone" dataKey="value" stroke="hsl(160 84% 39%)" strokeWidth={1.5} fill="url(#rev)" />
+                  <RechartsTooltip contentStyle={{ background: "hsl(var(--popover)/0.9)", backdropFilter: "blur(4px)", border: "1px solid hsla(var(--primary)/0.5)", borderRadius: "0.5rem", fontSize: 12, boxShadow: "0 0 10px hsla(var(--primary)/0.2)" }} formatter={(v: number) => [`$${v.toLocaleString()}`, "Revenue"]} />
+                  <Area type="monotone" dataKey="value" stroke="hsl(var(--chart-3))" strokeWidth={2} fill="url(#rev)" filter="url(#glowArea)" />
                 </AreaChart>
               </ResponsiveContainer>
             </TabsContent>
             <TabsContent value="users">
               <ResponsiveContainer width="100%" height={220}>
                 <LineChart data={userPoints}>
+                  <defs>
+                    <filter id="glowLine" x="-20%" y="-20%" width="140%" height="140%">
+                      <feGaussianBlur stdDeviation="3" result="blur" />
+                      <feMerge>
+                        <feMergeNode in="blur"/>
+                        <feMergeNode in="SourceGraphic"/>
+                      </feMerge>
+                    </filter>
+                  </defs>
                   <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" strokeOpacity={0.5} />
                   <XAxis dataKey="label" tick={{ fontSize: 10, fill: "hsl(var(--muted-foreground))" }} axisLine={false} tickLine={false} interval={Math.floor(userPoints.length / 6)} />
                   <YAxis tick={{ fontSize: 10, fill: "hsl(var(--muted-foreground))" }} axisLine={false} tickLine={false} />
-                  <RechartsTooltip contentStyle={{ background: "hsl(var(--popover))", border: "1px solid hsl(var(--border))", borderRadius: "0.5rem", fontSize: 12 }} formatter={(v: number) => [v, "Users"]} />
-                  <Line type="monotone" dataKey="value" stroke="hsl(243 75% 59%)" strokeWidth={1.5} dot={false} />
+                  <RechartsTooltip contentStyle={{ background: "hsl(var(--popover)/0.9)", backdropFilter: "blur(4px)", border: "1px solid hsla(var(--primary)/0.5)", borderRadius: "0.5rem", fontSize: 12, boxShadow: "0 0 10px hsla(var(--primary)/0.2)" }} formatter={(v: number) => [v, "Users"]} />
+                  <Line type="monotone" dataKey="value" stroke="hsl(var(--primary))" strokeWidth={2} dot={false} filter="url(#glowLine)" />
                 </LineChart>
               </ResponsiveContainer>
             </TabsContent>
           </Tabs>
         </div>
 
-        {/* Activity Feed */}
-        <div className="rounded border border-border/60 bg-card px-4 py-4 flex flex-col">
+        <div className="rounded border border-border/60 bg-card/80 backdrop-blur-md px-4 py-4 flex flex-col hover:glow-border transition-all">
           <h2 className="font-semibold text-sm mb-3">Recent Activity</h2>
           <div className="flex-1">
             {pagedActivity.map(item => <ActivityRow key={item.id} item={item} />)}

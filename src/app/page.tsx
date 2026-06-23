@@ -1,5 +1,5 @@
-import Home from "@/views/Home";
+import { redirect } from "next/navigation";
 
 export default function HomePage() {
-  return <Home />;
+  redirect("/dashboard");
 }
